@@ -1,1 +1,5 @@
-npx lint-staged
+#!/usr/bin/env sh
+export NODE_OPTIONS="--experimental-strip-types"
+
+cd ecommerce-app
+npx lint-staged --config lint-staged.config.mts
