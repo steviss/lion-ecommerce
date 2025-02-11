@@ -1,5 +1,4 @@
-
-const config = {
+module.exports = {
   printWidth: 140,
   trailingComma: 'all',
   tabWidth: 2,
@@ -20,5 +19,3 @@ const config = {
   tailwindFunctions: ['classNames'],
   cssDeclarationSorterOrder: 'smacss',
 }
-
-export default config
