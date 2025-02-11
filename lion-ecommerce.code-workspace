@@ -3,7 +3,7 @@
     {
       "name": "Lion E-Commerce",
       "path": "./ecommerce-app",
-      "prettier.configPath": "./.prettier.config.mjs"
+      "prettier.configPath": "./.prettier.config.js"
     },
     {
       "name": "Root",
