@@ -9,7 +9,9 @@
     "start": "next start",
     "lint": "next lint",
     "format": "NODE_OPTIONS='--experimental-strip-types' prettier . --write",
-    "format:ci": "NODE_OPTIONS='--experimental-strip-types' prettier . --check"
+    "format:ci": "NODE_OPTIONS='--experimental-strip-types' prettier . --check",
+    "docker": "docker-compose -f docker-compose.yml up --build",
+    "docker:dev": "docker-compose -f docker-compose.yml up"
   },
   "dependencies": {
     "@prisma/client": "^6.3.0",
