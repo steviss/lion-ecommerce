@@ -3,7 +3,13 @@
     {
       "name": "Lion E-Commerce",
       "path": "./ecommerce-app",
-      "prettier.configPath": "./.prettier.config.js"
+      "prettier.configPath": "./.prettier.config.js",
+      "typescript.tsdk": "./node_modules/typescript/lib"
+    },
+    {
+      "name": "Sanity Studio App",
+      "path": "./sanity-app",
+      "typescript.tsdk": "./node_modules/typescript/lib"
     },
     {
       "name": "Root",
@@ -41,7 +47,7 @@
       "typescriptreact"
     ],
     "css.lint.unknownAtRules": "ignore", //@tailwind imports for warnings
-    "eslint.workingDirectories": ["./ecommerce-app"],
+    "eslint.workingDirectories": ["./ecommerce-app", "./sanity-app"],
     "typescript.enablePromptUseWorkspaceTsdk": true,
     "typescript.preferences.importModuleSpecifier": "non-relative",
     "files.eol": "\n",
