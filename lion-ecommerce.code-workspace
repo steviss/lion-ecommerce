@@ -1,0 +1,66 @@
+{
+  "folders": [
+    {
+      "name": "Lion E-Commerce",
+      "path": "./ecommerce-app",
+      "prettier.configPath": "./.prettier.config.js"
+    },
+    {
+      "name": "Root",
+      "path": "./"
+    }
+  ],
+  "extensions": {
+    "recommendations": [
+      "dbaeumer.vscode-eslint", //Linter (ESLint)
+      "esbenp.prettier-vscode", // Prettier, code formatter
+      "redhat.vscode-yaml", //For Docker-Compose Yaml Files
+      "donjayamanne.githistory", //Helps with git, can compare files.
+      "bradlc.vscode-tailwindcss" // Tailwind CSS IntelliSense
+    ]
+  },
+  "settings": {
+    "yaml.schemas": {
+      "https://json.schemastore.org/github-workflow.json": [
+        "*.github/workflows/*.yaml",
+        "*.github/workflows/*.yml"
+      ],
+      "https://json.schemastore.org/github-action.json": [
+        "action.yaml",
+        "action.yml"
+      ]
+    },
+    "[github-actions-workflow]": {
+      "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact",
+      "html",
+      "typescript",
+      "typescriptreact"
+    ],
+    "css.lint.unknownAtRules": "ignore", //@tailwind imports for warnings
+    "eslint.workingDirectories": ["./ecommerce-app"],
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "typescript.preferences.importModuleSpecifier": "non-relative",
+    "files.eol": "\n",
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": "active",
+    "editor.tabSize": 2,
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      "**/node_modules": false
+    }
+  }
+}
