@@ -1,4 +1,5 @@
-import { zodValidateRequest } from '@/utility'
+import { zodValidateBody } from '@/utility'
+import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
 const CREATE_PRODUCT_VALIDATION_SCHEMA = z.object({
@@ -16,11 +17,10 @@ const CREATE_PRODUCT_VALIDATION_SCHEMA = z.object({
     .max(1000000, { message: 'Price must be at most 1000000' }),
 })
 
-const createProduct = async (req: Request) => {
+const createProduct = async (req: NextRequest) => {
   console.log('POST /api/product')
-  return new Response(JSON.stringify({ message: `Hello from Next.js! POST ${JSON.stringify(req.body)}` }), {
-    status: 200,
-  })
+  console.debug(req)
+  return NextResponse.json({ message: 'Hello from Next.js! POST' })
 }
 
-export default zodValidateRequest(CREATE_PRODUCT_VALIDATION_SCHEMA)(createProduct)
+export default zodValidateBody(CREATE_PRODUCT_VALIDATION_SCHEMA)(createProduct)

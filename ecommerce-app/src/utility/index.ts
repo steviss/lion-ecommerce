@@ -1,2 +1,2 @@
-export { default as zodValidateRequest } from './zodValidateRequest'
-export { default as zodErrorReadableResponse } from './zodErrorReadableResponse'
+export { default as zodValidateBody } from './zodValidateBody'
+export { default as zodValidateQuery } from './zodValidateQuery'
