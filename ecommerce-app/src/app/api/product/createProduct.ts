@@ -1,0 +1,27 @@
+import { zodValidateRequest } from '@/utility'
+import { z } from 'zod'
+
+const CREATE_PRODUCT_VALIDATION_SCHEMA = z.object({
+  name: z
+    .string({ message: 'Please enter a name' })
+    .min(1, { message: 'Name must be at least 1 character long' })
+    .max(255, { message: 'Name must be at most 255 characters long' }),
+  description: z
+    .string({ message: 'Please enter a description' })
+    .min(1, { message: 'Description must be at least 1 character long' })
+    .max(255, { message: 'Description must be at most 255 characters long' }),
+  price: z
+    .number({ message: 'Please enter a price ' })
+    .int()
+    .min(1, { message: 'Price must be at least 1' })
+    .max(1000000, { message: 'Price must be at most 1000000' }),
+})
+
+const createProduct = async (req: Request) => {
+  console.log('POST /api/product')
+  return new Response(JSON.stringify({ message: `Hello from Next.js! POST ${JSON.stringify(req.body)}` }), {
+    status: 200,
+  })
+}
+
+export default zodValidateRequest(CREATE_PRODUCT_VALIDATION_SCHEMA)(createProduct)
