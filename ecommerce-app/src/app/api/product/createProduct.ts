@@ -12,7 +12,6 @@ const CREATE_PRODUCT_VALIDATION_SCHEMA = z.object({
     .max(255, { message: 'Description must be at most 255 characters long' }),
   price: z
     .number({ message: 'Please enter a price ' })
-    .int()
     .min(1, { message: 'Price must be at least 1' })
     .max(1000000, { message: 'Price must be at most 1000000' }),
 })
