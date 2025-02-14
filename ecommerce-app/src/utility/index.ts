@@ -1,2 +1,3 @@
-export { default as zodValidateBody } from './zodValidateBody'
-export { default as zodValidateQuery } from './zodValidateQuery'
+export * from './zodValidateBody'
+export * from './zodValidateQuery'
+export * from './getParams'

@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 import { zodReadableErrorBodyResponse } from './zodReadableErrors'
 
-const zodValidateBody = (schema: z.AnyZodObject) => {
+export const zodValidateBody = (schema: z.AnyZodObject) => {
   return (handler: (req: NextRequest) => Promise<NextResponse>) => {
     return async (req: NextRequest) => {
       if (schema) {
@@ -48,5 +48,3 @@ const zodValidateBody = (schema: z.AnyZodObject) => {
     }
   }
 }
-
-export default zodValidateBody

@@ -1,4 +1,4 @@
-import { zodValidateBody, zodValidateQuery } from '@/utility'
+import { getParams, zodValidateBody, zodValidateQuery } from '@/utility'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -26,7 +26,7 @@ const UPDATE_PRODUCT_VALIDATION_QUERY_SCHEMA = z.object({
 
 const updateProduct = async (req: NextRequest) => {
   console.log('PUT /api/product')
-  const params = new URL(req.url).searchParams
+  const { params } = getParams(req.url)
   if (!params.has('id')) {
     return NextResponse.json({ message: 'Please enter an id' }, { status: 400 })
   }
