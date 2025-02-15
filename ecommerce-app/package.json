@@ -8,6 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "prisma": "npx prisma",
+    "prisma:migrate": "npx prisma migrate dev --name testing",
     "format": "NODE_OPTIONS='--experimental-strip-types' prettier . --write",
     "format:ci": "NODE_OPTIONS='--experimental-strip-types' prettier . --check",
     "docker": "docker-compose -f docker-compose.yml up --build",
