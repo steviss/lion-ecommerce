@@ -1,5 +1,5 @@
-import { getParams, zodValidateBody, zodValidateQuery } from '@/utility'
-import { NextRequest, NextResponse } from 'next/server'
+import { zodValidate } from '@/utility'
+import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 const UPDATE_PRODUCT_VALIDATION_BODY_SCHEMA = z.object({
@@ -24,15 +24,16 @@ const UPDATE_PRODUCT_VALIDATION_QUERY_SCHEMA = z.object({
   id: z.string({ message: 'Please enter an id' }).uuid({ message: 'Please enter a valid id' }),
 })
 
-const updateProduct = async (req: NextRequest) => {
-  console.log('PUT /api/product')
-  const { params } = getParams(req.url)
-  if (!params.has('id')) {
-    return NextResponse.json({ message: 'Please enter an id' }, { status: 400 })
-  }
-  return NextResponse.json({ message: 'Hello from Next.js! PUT', info: params.get('id') }, { status: 200 })
+interface UpdateProductPayload {
+  body: z.infer<typeof UPDATE_PRODUCT_VALIDATION_BODY_SCHEMA>
+  query: z.infer<typeof UPDATE_PRODUCT_VALIDATION_QUERY_SCHEMA>
 }
 
-export default zodValidateQuery(UPDATE_PRODUCT_VALIDATION_QUERY_SCHEMA)(
-  zodValidateBody(UPDATE_PRODUCT_VALIDATION_BODY_SCHEMA)(updateProduct),
+const updateProduct = async (payload: UpdateProductPayload) => {
+  console.log('PUT /api/product', payload)
+  return NextResponse.json({ message: 'Hello from Next.js! PUT', info: payload }, { status: 200 })
+}
+
+export default zodValidate({ queryParams: UPDATE_PRODUCT_VALIDATION_QUERY_SCHEMA, bodyParams: UPDATE_PRODUCT_VALIDATION_BODY_SCHEMA })(
+  updateProduct,
 )
