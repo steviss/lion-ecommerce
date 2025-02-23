@@ -1,5 +1,6 @@
 model Product {
   id         String           @id @default(uuid())
+  sku        String           @unique
   price      Float
   quantity   Int
   category   Category         @relation(fields: [categoryId], references: [id])
