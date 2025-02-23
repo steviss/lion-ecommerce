@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "prepare": "cd .. && husky ecommerce-app/.husky",
+    "scaffold:route": "NODE_OPTIONS='--experimental-strip-types' node ./scripts/api-route-scaffold/index.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -43,7 +44,9 @@
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
     "eslint-config-prettier": "^10.0.1",
+    "handlebars": "^4.7.8",
     "husky": "^9.1.7",
+    "inquirer": "^12.4.2",
     "lint-staged": "^15.4.3",
     "postcss": "^8",
     "postcss-import": "^16.1.0",
