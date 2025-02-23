@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ZodError, z } from 'zod'
 
+import { handleError, handleValidationError } from './handleErrors'
+
 /**
  * Utility function to parse the request body based on the content type.
  *
@@ -33,32 +35,6 @@ const parseQueryParams = async (req: NextRequest): Promise<Record<string, unknow
     queryData[key] = searchParams.get(key)
   }
   return queryData
-}
-
-/**
- * Utility function to handle Zod validation errors.
- *
- * @param {ZodError} error - The Zod validation error object.
- * @returns {NextResponse} - A JSON response containing the validation error details.
- */
-const handleValidationError = (error: ZodError): NextResponse => {
-  return NextResponse.json(
-    {
-      message: 'Validation Error',
-      errors: error.flatten().fieldErrors,
-    },
-    { status: 400 },
-  )
-}
-
-/**
- * Utility function to handle generic errors.
- *
- * @param {Error} error - The error object.
- * @returns {NextResponse} - A JSON response containing the error message.
- */
-const handleError = (error: Error): NextResponse => {
-  return NextResponse.json({ message: 'Bad Request', error: error.message }, { status: 400 })
 }
 
 /**
@@ -105,7 +81,7 @@ export const zodValidate = <TBody extends z.AnyZodObject, TQuery extends z.AnyZo
         if (error instanceof ZodError) {
           return handleValidationError(error)
         }
-        return handleError(error as Error)
+        return handleError(error)
       }
     }
   }
