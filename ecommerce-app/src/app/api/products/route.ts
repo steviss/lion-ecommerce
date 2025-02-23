@@ -4,5 +4,3 @@ import { default as GET } from './readProduct'
 import { default as PUT } from './updateProduct'
 
 export { GET, POST, PUT, DELETE }
-
-export const revalidate = 60

@@ -1,5 +1,5 @@
-import prisma from '@/lib/prisma'
-import { zodValidate } from '@/utility'
+import { handleError, zodValidate } from '@/utility'
+import { prismaClient } from '@clients'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -15,7 +15,14 @@ const CREATE_PRODUCT_VALIDATION_SCHEMA = z.object({
   price: z.coerce
     .number({ message: 'Please enter a price' })
     .min(1, { message: 'Price must be at least 1' })
-    .max(1000000, { message: 'Price must be at most 1000000' }),
+    .max(1000000, { message: 'Prisce must be at most 1000000' }),
+  brandId: z.string({ message: 'Please enter a brandId' }).uuid({ message: 'Invalid brandId' }),
+  categoryId: z.string({ message: 'Please enter a categoryId' }).uuid({ message: 'Invalid categoryId' }),
+  quantity: z.coerce
+    .number({ message: 'Please enter a quantity' })
+    .min(1, { message: 'Quantity must be at least 1' })
+    .max(1000000, { message: 'Quantity must be at most 1000000' }),
+  sku: z.string({ message: 'Please enter a sku' }).min(1, { message: 'Sku must be at least 1 character long' }),
 })
 
 interface CreateProductPayload {
@@ -23,10 +30,23 @@ interface CreateProductPayload {
 }
 
 const createProduct = async (payload: CreateProductPayload) => {
-  console.log('data', payload)
-  console.log('POST /api/product')
-  console.debug(payload)
-  return NextResponse.json({ message: 'Hello from Next.js! POST' })
+  try {
+    console.log('payload', payload)
+    const { name, description, price, brandId, categoryId, quantity, sku } = payload.body
+    const product = await prismaClient.product.create({
+      data: {
+        price,
+        brandId,
+        categoryId,
+        quantity,
+        sku,
+      },
+    })
+    console.log('result', product)
+    return NextResponse.json({ ...product }, { status: 200 })
+  } catch (error) {
+    return handleError(error)
+  }
 }
 
 export default zodValidate({ bodyParams: CREATE_PRODUCT_VALIDATION_SCHEMA })(createProduct)
