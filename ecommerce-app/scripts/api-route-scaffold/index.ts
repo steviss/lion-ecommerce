@@ -27,6 +27,9 @@ const toCamelCase = (str: string): string => {
 
   const routeName: string = answers.routeName
   const formattedRouteName = toCamelCase(routeName)
+  const formattedRouteNameSingle = formattedRouteName.endsWith('ies')
+    ? formattedRouteName.replace('ies', 'y')
+    : formattedRouteName.slice(0, -1)
   const folderName = routeName.toLowerCase()
   const folderPath = path.join('src', 'app', 'api', folderName)
 
@@ -48,15 +51,15 @@ const toCamelCase = (str: string): string => {
   // Load each template
   const routeTemplate = await compileTemplate('route.hbs')
   const createTemplate = await compileTemplate('create.hbs')
-  const readTemplateFile = answers.singleItem ? 'read_multi.hbs' : 'read.hbs'
-  const readTemplate = await compileTemplate(readTemplateFile)
+  const readTemplate = answers.singleItem ? await compileTemplate('read_multi.hbs') : await compileTemplate('read.hbs')
+  const readTemplateFile = readTemplate({ formattedRouteName, formattedRouteNameSingle })
   const updateTemplate = await compileTemplate('update.hbs')
   const deleteTemplate = await compileTemplate('delete.hbs')
 
   // Write out files using the compiled templates
   await fs.writeFile(path.join(folderPath, 'route.ts'), routeTemplate({ formattedRouteName }))
   await fs.writeFile(path.join(folderPath, `create${formattedRouteName}.ts`), createTemplate({ formattedRouteName }))
-  await fs.writeFile(path.join(folderPath, `read${formattedRouteName}.ts`), readTemplate({ formattedRouteName }))
+  await fs.writeFile(path.join(folderPath, `read${formattedRouteName}.ts`), readTemplateFile)
   await fs.writeFile(path.join(folderPath, `update${formattedRouteName}.ts`), updateTemplate({ formattedRouteName }))
   await fs.writeFile(path.join(folderPath, `delete${formattedRouteName}.ts`), deleteTemplate({ formattedRouteName }))
 
