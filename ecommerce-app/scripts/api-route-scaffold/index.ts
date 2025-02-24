@@ -57,11 +57,20 @@ const toCamelCase = (str: string): string => {
   const deleteTemplate = await compileTemplate('delete.hbs')
 
   // Write out files using the compiled templates
-  await fs.writeFile(path.join(folderPath, 'route.ts'), routeTemplate({ formattedRouteName }))
-  await fs.writeFile(path.join(folderPath, `create${formattedRouteName}.ts`), createTemplate({ formattedRouteName }))
-  await fs.writeFile(path.join(folderPath, `read${formattedRouteName}.ts`), readTemplateFile)
-  await fs.writeFile(path.join(folderPath, `update${formattedRouteName}.ts`), updateTemplate({ formattedRouteName }))
-  await fs.writeFile(path.join(folderPath, `delete${formattedRouteName}.ts`), deleteTemplate({ formattedRouteName }))
+  await fs.writeFile(path.join(folderPath, 'route.ts'), routeTemplate({ formattedRouteName: formattedRouteNameSingle }))
+  await fs.writeFile(
+    path.join(folderPath, `create${formattedRouteNameSingle}.ts`),
+    createTemplate({ formattedRouteName: formattedRouteNameSingle }),
+  )
+  await fs.writeFile(path.join(folderPath, `read${formattedRouteNameSingle}.ts`), readTemplateFile)
+  await fs.writeFile(
+    path.join(folderPath, `update${formattedRouteNameSingle}.ts`),
+    updateTemplate({ formattedRouteName: formattedRouteNameSingle }),
+  )
+  await fs.writeFile(
+    path.join(folderPath, `delete${formattedRouteNameSingle}.ts`),
+    deleteTemplate({ formattedRouteName: formattedRouteNameSingle }),
+  )
 
   console.log(`Files created successfully under ${folderPath} folder. 🎉`)
   console.log('Happy coding! 🚀')

@@ -1,5 +1,5 @@
-import { getParams } from '@/utility'
-import { NextRequest, NextResponse } from 'next/server'
+import { getParams } from '@/utility';
+import { NextRequest, NextResponse } from 'next/server';
 
 const getCategory = async (req: NextRequest) => {
   return NextResponse.json({ message: 'Hello from Next.js! GET', payload: req.json() })
