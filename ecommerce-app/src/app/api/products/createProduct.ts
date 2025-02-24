@@ -32,7 +32,7 @@ interface CreateProductPayload {
 const createProduct = async (payload: CreateProductPayload) => {
   try {
     console.log('payload', payload)
-    const { name, description, price, brandId, categoryId, quantity, sku } = payload.body
+    const { price, brandId, categoryId, quantity, sku } = payload.body
     const product = await prismaClient.product.create({
       data: {
         price,
