@@ -18,7 +18,7 @@ interface CreateCategoryPayload {
   body: z.infer<typeof CREATE_CATEGORY_VALIDATION_SCHEMA>
 }
 
-const CATEGORY_TYPE = 'category'
+export const CATEGORY_TYPE = 'category'
 
 const createCategory = async (payload: CreateCategoryPayload) => {
   try {

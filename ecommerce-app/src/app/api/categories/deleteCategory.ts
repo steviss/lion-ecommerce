@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 const DELETE_CATEGORY_VALIDATION_SCHEMA = z.object({
-  id: z.string().uuid().nonempty(),
+  id: z.string({ message: 'Please enter an id' }).uuid({ message: 'Please enter a valid id' }),
 })
 
 interface DeleteCategoryPayload {
