@@ -16,18 +16,18 @@ interface GetBrandPayload {
 
 const getBrand = async (payload: GetBrandPayload) => {
   const { id } = payload.query
-  const category = await prismaClient.brand.findUniqueOrThrow({ where: { id } })
-  const sanityResult = await sanityClient.getDocument(category.sanityId)
-  return NextResponse.json({ ...category, ...sanityResult }, { status: 200 })
+  const brand = await prismaClient.brand.findUniqueOrThrow({ where: { id } })
+  const sanityResult = await sanityClient.getDocument(brand.sanityId)
+  return NextResponse.json({ ...brand, ...sanityResult }, { status: 200 })
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getBrands = async (_req: NextRequest) => {
-  const categories = await prismaClient.category.findMany()
+  const brands = await prismaClient.brand.findMany()
   const sanityResults = await findyManyByType<SanityBrandType>(BRAND_TYPE)
-  const results = categories.map((category) => {
-    const sanityResult = sanityResults.find((result) => result._id === category.sanityId)
-    return { ...category, name: sanityResult?.name, description: sanityResult?.description }
+  const results = brands.map((brand) => {
+    const sanityResult = sanityResults.find((result) => result._id === brand.sanityId)
+    return { ...brand, name: sanityResult?.name, description: sanityResult?.description }
   })
 
   return NextResponse.json({ items: results }, { status: 200 })
