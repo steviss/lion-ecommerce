@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
 const DELETE_PRODUCT_VALIDATION_SCHEMA = z.object({
-  id: z.string().uuid().nonempty(),
+  id: z.string({ message: 'Please enter an id' }).uuid({ message: 'Please enter a valid id' }),
 })
 
 interface DeleteCategoryPayload {
@@ -16,7 +16,7 @@ const deleteProduct = async (payload: DeleteCategoryPayload) => {
     const product = await prismaClient.product.findUniqueOrThrow({ where: { id: payload.query.id } })
     await prismaClient.product.delete({ where: { id: product.id } })
     await sanityClient.delete(product.sanityId)
-    return NextResponse.json({ message: `Succesfully deleted a catgory with the id: ${payload.query.id}` }, { status: 200 })
+    return NextResponse.json({ message: `Succesfully deleted a product with the id: ${payload.query.id}` }, { status: 200 })
   } catch (error) {
     return handleError(error)
   }

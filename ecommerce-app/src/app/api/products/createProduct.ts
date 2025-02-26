@@ -29,12 +29,13 @@ interface CreateProductPayload {
   body: z.infer<typeof CREATE_PRODUCT_VALIDATION_SCHEMA>
 }
 
+export const PRODUCT_TYPE = 'product'
+
 const createProduct = async (payload: CreateProductPayload) => {
   try {
-    console.log('payload', payload)
     const { price, brandId, categoryId, quantity, sku } = payload.body
     const sanityResult = await sanityClient.create({
-      _type: 'product',
+      _type: PRODUCT_TYPE,
       name: payload.body.name,
       description: payload.body.description,
     })
@@ -48,7 +49,6 @@ const createProduct = async (payload: CreateProductPayload) => {
         sanityId: sanityResult._id,
       },
     })
-    console.log('result', product)
     return NextResponse.json({ ...product, ...sanityResult }, { status: 200 })
   } catch (error) {
     return handleError(error)

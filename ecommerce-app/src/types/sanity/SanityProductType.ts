@@ -1,4 +1,5 @@
 export type SanityProductType = {
+  [key: string]: unknown
   _id: string
   _type: 'product'
   slug: {
