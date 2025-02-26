@@ -1,5 +1,5 @@
 import { prismaClient, sanityClient } from '@/lib/clients'
-import { generateSlug, handleError, isSlugUniqueWithinSanity } from '@/utility'
+import { generateSlug, handleError, isSlugUniqueWithinSanity, zodValidate } from '@/utility'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -42,4 +42,4 @@ const createTags = async (payload: CreateTagPayload) => {
   }
 }
 
-export default createTags
+export default zodValidate({ bodyParams: CREATE_TAGS_VALIDATION_SCHEMA })(createTags)
