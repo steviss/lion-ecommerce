@@ -1,3 +1,5 @@
 export * from './getParams'
 export * from './zodValidate'
 export * from './handleErrors'
+export * from './generateSlug'
+export * from './sanity'
