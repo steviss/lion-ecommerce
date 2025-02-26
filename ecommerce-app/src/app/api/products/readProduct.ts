@@ -1,4 +1,6 @@
-import { getParams, zodValidate } from '@/utility'
+import { prismaClient } from '@/lib/clients'
+import { SanityProductType } from '@/types'
+import { findyManyByType, getParams, zodValidate } from '@/utility'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -16,10 +18,15 @@ const getProduct = async (payload: GetProductsPayload) => {
   return NextResponse.json({ message: 'Hello from Next.js! GET' })
 }
 
-const getProducts = async (req: NextRequest) => {
-  console.log('GET /api/products')
-  console.debug(req)
-  return NextResponse.json({ message: 'Hello from Next.js! GETs' })
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getProducts = async (_req: NextRequest) => {
+  const products = await prismaClient.product.findMany()
+  const sanityResults = await findyManyByType<SanityProductType>('product')
+  const results = products.map((product) => {
+    const sanityResult = sanityResults.find((result) => result._id === product.sanityId)
+    return { ...product, name: sanityResult?.name, description: sanityResult?.description }
+  })
+  return NextResponse.json({ items: results }, { status: 200 })
 }
 
 const getProductsRoute = async (req: NextRequest) => {

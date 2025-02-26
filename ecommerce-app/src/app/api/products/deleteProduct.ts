@@ -1,9 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { prismaClient, sanityClient } from '@/lib/clients'
+import { handleError, zodValidate } from '@/utility'
+import { NextResponse } from 'next/server'
+import { z } from 'zod'
 
-const deleteProduct = (req: NextRequest) => {
-  console.log('DELETE /api/product')
-  console.debug(req)
-  return NextResponse.json({ message: 'Hello from Next.js! DELETE' }, { status: 200 })
+const DELETE_PRODUCT_VALIDATION_SCHEMA = z.object({
+  id: z.string().uuid().nonempty(),
+})
+
+interface DeleteCategoryPayload {
+  query: z.infer<typeof DELETE_PRODUCT_VALIDATION_SCHEMA>
 }
 
-export default deleteProduct
+const deleteProduct = async (payload: DeleteCategoryPayload) => {
+  try {
+    const product = await prismaClient.product.findUniqueOrThrow({ where: { id: payload.query.id } })
+    await prismaClient.product.delete({ where: { id: product.id } })
+    await sanityClient.delete(product.sanityId)
+    return NextResponse.json({ message: `Succesfully deleted a catgory with the id: ${payload.query.id}` }, { status: 200 })
+  } catch (error) {
+    return handleError(error)
+  }
+}
+
+export default zodValidate({ queryParams: DELETE_PRODUCT_VALIDATION_SCHEMA })(deleteProduct)

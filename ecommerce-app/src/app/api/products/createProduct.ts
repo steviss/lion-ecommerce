@@ -1,9 +1,9 @@
 import { handleError, zodValidate } from '@/utility'
-import { prismaClient } from '@clients'
+import { prismaClient, sanityClient } from '@clients'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
-const CREATE_PRODUCT_VALIDATION_SCHEMA = z.object({
+export const CREATE_PRODUCT_VALIDATION_SCHEMA = z.object({
   name: z
     .string({ message: 'Please enter a name' })
     .min(1, { message: 'Name must be at least 1 character long' })
@@ -33,6 +33,11 @@ const createProduct = async (payload: CreateProductPayload) => {
   try {
     console.log('payload', payload)
     const { price, brandId, categoryId, quantity, sku } = payload.body
+    const sanityResult = await sanityClient.create({
+      _type: 'product',
+      name: payload.body.name,
+      description: payload.body.description,
+    })
     const product = await prismaClient.product.create({
       data: {
         price,
@@ -40,10 +45,11 @@ const createProduct = async (payload: CreateProductPayload) => {
         categoryId,
         quantity,
         sku,
+        sanityId: sanityResult._id,
       },
     })
     console.log('result', product)
-    return NextResponse.json({ ...product }, { status: 200 })
+    return NextResponse.json({ ...product, ...sanityResult }, { status: 200 })
   } catch (error) {
     return handleError(error)
   }
