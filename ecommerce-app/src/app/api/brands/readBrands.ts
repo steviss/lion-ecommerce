@@ -1,18 +1,42 @@
-import { getParams } from '@/utility';
-import { NextRequest, NextResponse } from 'next/server';
+import { prismaClient, sanityClient } from '@/lib/clients'
+import { SanityBrandType } from '@/types'
+import { findyManyByType, getParams, zodValidate } from '@/utility'
+import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
 
-const getBrand = async (req: NextRequest) => {
-  return NextResponse.json({ message: 'Hello from Next.js! GET', payload: req.json() })
+import { BRAND_TYPE } from './createBrands'
+
+const READ_BRAND_VALIDATION_SCHEMA = z.object({
+  id: z.string({ message: 'Please enter an id' }).uuid({ message: 'Please enter a valid id' }),
+})
+
+interface GetBrandPayload {
+  query: z.infer<typeof READ_BRAND_VALIDATION_SCHEMA>
 }
 
-const getBrands = async (req: NextRequest) => {
-  return NextResponse.json({ message: 'Hello from Next.js! GETs', payload: req.json() })
+const getBrand = async (payload: GetBrandPayload) => {
+  const { id } = payload.query
+  const category = await prismaClient.brand.findUniqueOrThrow({ where: { id } })
+  const sanityResult = await sanityClient.getDocument(category.sanityId)
+  return NextResponse.json({ ...category, ...sanityResult }, { status: 200 })
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getBrands = async (_req: NextRequest) => {
+  const categories = await prismaClient.category.findMany()
+  const sanityResults = await findyManyByType<SanityBrandType>(BRAND_TYPE)
+  const results = categories.map((category) => {
+    const sanityResult = sanityResults.find((result) => result._id === category.sanityId)
+    return { ...category, name: sanityResult?.name, description: sanityResult?.description }
+  })
+
+  return NextResponse.json({ items: results }, { status: 200 })
 }
 
 const getBrandsRoute = async (req: NextRequest) => {
   const { params } = getParams(req.url)
   if (params.has('id')) {
-    return getBrand(req)
+    return zodValidate({ queryParams: READ_BRAND_VALIDATION_SCHEMA })(getBrand)(req)
   }
   return getBrands(req)
 }
