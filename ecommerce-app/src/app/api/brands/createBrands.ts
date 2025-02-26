@@ -1,5 +1,5 @@
 import { prismaClient, sanityClient } from '@/lib/clients'
-import { generateSlug, handleError, isSlugUniqueWithinSanity } from '@/utility'
+import { generateSlug, handleError, isSlugUniqueWithinSanity, zodValidate } from '@/utility'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -42,4 +42,4 @@ const createBrands = async (payload: CreateBrandPayload) => {
   }
 }
 
-export default createBrands
+export default zodValidate({ bodyParams: CREATE_BRAND_VALIDATION_SCHEMA })(createBrands)
