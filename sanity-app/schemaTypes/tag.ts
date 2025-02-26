@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {isSlugUniqueWithinSameDocuments} from '../lib/isSlugUniqueWithinSameDocuments'
 
 export default defineType({
   name: 'tag',
@@ -18,6 +19,7 @@ export default defineType({
       options: {
         source: 'name',
         maxLength: 200,
+        isUnique: isSlugUniqueWithinSameDocuments,
       },
     }),
     defineField({
