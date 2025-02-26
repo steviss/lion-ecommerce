@@ -1,3 +1,4 @@
+import { prismaClient, sanityClient } from '@/lib/clients'
 import { handleError, zodValidate } from '@/utility'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
@@ -12,7 +13,10 @@ interface DeleteCategoryPayload {
 
 const deleteCategory = async (payload: DeleteCategoryPayload) => {
   try {
-    return NextResponse.json({ message: 'Welcome to the DELETE Category route!', payload }, { status: 200 })
+    const category = await prismaClient.category.findUniqueOrThrow({ where: { id: payload.query.id } })
+    await prismaClient.category.delete({ where: { id: category.id } })
+    await sanityClient.delete(category.sanityId)
+    return NextResponse.json({ message: `Succesfully deleted a catgory with the id: ${payload.query.id}` }, { status: 200 })
   } catch (error) {
     return handleError(error)
   }
