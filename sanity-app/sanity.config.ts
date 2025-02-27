@@ -8,7 +8,7 @@ export default defineConfig({
   title: 'lion-ecommerce',
 
   projectId: '7xtzsldj',
-  dataset: 'production',
+  dataset: 'development',
 
   plugins: [structureTool(), visionTool()],
 

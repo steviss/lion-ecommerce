@@ -22,7 +22,8 @@
       "esbenp.prettier-vscode", // Prettier, code formatter
       "redhat.vscode-yaml", //For Docker-Compose Yaml Files
       "donjayamanne.githistory", //Helps with git, can compare files.
-      "bradlc.vscode-tailwindcss" // Tailwind CSS IntelliSense
+      "bradlc.vscode-tailwindcss", // Tailwind CSS IntelliSense
+      "Prisma.prisma" // Prisma IntelliSense
     ]
   },
   "settings": {

@@ -1,0 +1,7 @@
+import { NextRequest, NextResponse } from 'next/server'
+
+const get{{formattedRouteName}} = async (req: NextRequest) => {
+  return NextResponse.json({ message: 'Hello from Next.js! GET', payload: req.json() })
+}
+
+export default get{{formattedRouteName}}

@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lion E-Commerce
 
-## Getting Started
+## Commands
 
-First, run the development server:
+`yarn prisma:migrate:create`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Create migrations
+- It will run a CLI questionnaire, name your migrations accordingly, a timestamp will be automatically added in.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`yarn prisma:migrate:run`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Run migrations
+- This command will run all migrations, and figure out what is needed
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`yarn prisma:migrate:drop`
 
-## Learn More
+- Drop DB and reset
+- This command will drop the current DB and will run the migrations again
 
-To learn more about Next.js, take a look at the following resources:
+`yarn prisma:migrate:push`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Push schema
+- This command will push the current schema modifications without creating a migration. (This isn't recommended on prod)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`yarn prisma:check`
 
-## Deploy on Vercel
+- CI Check
+- This command will check for errors in your .prisma files, used for CI
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`yarn prisma:format`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Format
+- This command will check for errors and fix them

@@ -20,7 +20,11 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@firebase-config": ["./firebase.config"]
+      "@config": ["./src/config"],
+      "@firebase-config": ["./firebase.config"],
+      "@clients": ["./src/lib/clients"],
+      "@types": ["./src/types"],
+      "@utility": ["./src/utility"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

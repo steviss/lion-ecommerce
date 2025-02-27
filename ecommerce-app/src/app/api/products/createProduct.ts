@@ -1,0 +1,58 @@
+import { handleError, zodValidate } from '@/utility'
+import { prismaClient, sanityClient } from '@clients'
+import { NextResponse } from 'next/server'
+import { z } from 'zod'
+
+export const CREATE_PRODUCT_VALIDATION_SCHEMA = z.object({
+  name: z
+    .string({ message: 'Please enter a name' })
+    .min(1, { message: 'Name must be at least 1 character long' })
+    .max(255, { message: 'Name must be at most 255 characters long' }),
+  description: z
+    .string({ message: 'Please enter a description' })
+    .min(1, { message: 'Description must be at least 1 character long' })
+    .max(255, { message: 'Description must be at most 255 characters long' }),
+  price: z.coerce
+    .number({ message: 'Please enter a price' })
+    .min(1, { message: 'Price must be at least 1' })
+    .max(1000000, { message: 'Prisce must be at most 1000000' }),
+  brandId: z.string({ message: 'Please enter a brandId' }).uuid({ message: 'Invalid brandId' }),
+  categoryId: z.string({ message: 'Please enter a categoryId' }).uuid({ message: 'Invalid categoryId' }),
+  quantity: z.coerce
+    .number({ message: 'Please enter a quantity' })
+    .min(1, { message: 'Quantity must be at least 1' })
+    .max(1000000, { message: 'Quantity must be at most 1000000' }),
+  sku: z.string({ message: 'Please enter a sku' }).min(1, { message: 'Sku must be at least 1 character long' }),
+})
+
+interface CreateProductPayload {
+  body: z.infer<typeof CREATE_PRODUCT_VALIDATION_SCHEMA>
+}
+
+export const PRODUCT_TYPE = 'product'
+
+const createProduct = async (payload: CreateProductPayload) => {
+  try {
+    const { price, brandId, categoryId, quantity, sku } = payload.body
+    const sanityResult = await sanityClient.create({
+      _type: PRODUCT_TYPE,
+      name: payload.body.name,
+      description: payload.body.description,
+    })
+    const product = await prismaClient.product.create({
+      data: {
+        price,
+        brandId,
+        categoryId,
+        quantity,
+        sku,
+        sanityId: sanityResult._id,
+      },
+    })
+    return NextResponse.json({ ...product, ...sanityResult }, { status: 200 })
+  } catch (error) {
+    return handleError(error)
+  }
+}
+
+export default zodValidate({ bodyParams: CREATE_PRODUCT_VALIDATION_SCHEMA })(createProduct)

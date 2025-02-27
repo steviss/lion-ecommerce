@@ -1,0 +1,20 @@
+import { getParams } from '@/utility';
+import { NextRequest, NextResponse } from 'next/server';
+
+const get{{formattedRouteNameSingle}} = async (req: NextRequest) => {
+  return NextResponse.json({ message: 'Hello from Next.js! GET', payload: req.json() })
+}
+
+const get{{formattedRouteName}} = async (req: NextRequest) => {
+  return NextResponse.json({ message: 'Hello from Next.js! GETs', payload: req.json() })
+}
+
+const get{{formattedRouteName}}Route = async (req: NextRequest) => {
+  const { params } = getParams(req.url)
+  if (params.has('id')) {
+    return get{{formattedRouteNameSingle}}(req)
+  }
+  return get{{formattedRouteName}}(req)
+}
+
+export default get{{formattedRouteName}}Route
